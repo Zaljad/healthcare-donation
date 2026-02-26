@@ -23,7 +23,7 @@
 ### ***RED***
 
 
-![RED](/images/RED.jpeg)
+![RED](/images/ERDiagram.png)
 ***
 
 ### ***Getting Started***
