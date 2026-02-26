@@ -29,7 +29,7 @@
 ### ***Getting Started***
 
 ##### Create a new account or log in to start exploring the different sections of the website.
-##### A Trello board was used to keep track of development progress and can be viewed [here](URL).
+##### A Trello board was used to keep track of development progress and can be viewed [here](https://trello.com/b/yo7kyKUk).
 ##### The project was deployed and can be viewed [here](URL).
 ***
 
