@@ -79,6 +79,9 @@ const updatePassword = async(req,res)=>{
     if(!user){
       return res.send('❌ No user with that ID exists!')
     }
+
+    res.send(`User ${user.userName} ready to update password ✨`)
+
   } catch (error) {
     console.error('⚠️ An error has occurred updating password a user!', error.message)
   }
