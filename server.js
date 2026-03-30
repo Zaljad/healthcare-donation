@@ -7,6 +7,7 @@ const {MongoStore}= require ('connect-mongo')
 const path = require('path')
 const db = require('./db')
 const app = express()
+const authRouter = require('./routes/authRouter')
 
 const dns = require('dns')
 dns.setServers(['8.8.8.8', '1.1.1.1'])
@@ -25,6 +26,8 @@ app.use(session({
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(express.static(path.join(__dirname,'public')))
+
+app.use('/auth', authRouter)
 
 app.get('/', (req, res) =>{
   res.send('Medical Equipment Donation API is running 🩺🤝')
