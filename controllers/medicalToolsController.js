@@ -2,7 +2,8 @@ const MedicalEquipment = require('../models/MedicalEquipment');
 
 const createTool =async (req, res) => {
   try {
-    const newTool = await MedicalEquipment.create(req.body)
+    const toolData ={...req.body}
+    const newTool = await MedicalEquipment.create(toolData)
     res.send(newTool)
   } catch (error) {
     console.error('⚠️ an error occurred creating a tool!', error.message)
@@ -11,7 +12,7 @@ const createTool =async (req, res) => {
 
 const getAllTools = async (req,res) => {
   try {
-    const tools = await MedicalEquipment.find({})
+    const tools = await MedicalEquipment.find({ status: 'available'})
     res.send({tools})
 
   } catch (error) {
@@ -34,7 +35,7 @@ const getToolById = async (req, res) => {
 const getToolsByCategory = async (req, res) => {
   try {
     const {category} = req.params
-    const tools = await MedicalEquipment.find({category: category})
+    const tools = await MedicalEquipment.find({category: category, status: 'available'})
     if(tools.length === 0){
       return res.send('No tools found in this category❗')
     }
@@ -46,7 +47,12 @@ const getToolsByCategory = async (req, res) => {
 
 const updateTool = async (req, res) => {
   try{
-    const tool = await MedicalEquipment.findByIdAndUpdate(req.params.id,req.body,{new: true})
+
+    if (!req.session.user || req.session.user.role !== 'admin'){
+      return res.send('❌ Access denied!')
+    }
+
+    const tool = await MedicalEquipment.findByIdAndUpdate(req.params.id,req.body,{new: true, runValidator: true})
     if (!tool){
       return res.send ('Tool is not exist❗')
     }
@@ -58,6 +64,9 @@ const updateTool = async (req, res) => {
 
 const deleteTool = async (req, res) => {
   try {
+    if (!req.session.user || req.session.user.role !== 'admin'){
+      return res.send('❌ Access denied!')
+    }
     const tool = await MedicalEquipment.findByIdAndDelete(req.params.id)
 
     if(!tool){
