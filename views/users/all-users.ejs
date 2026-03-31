@@ -1,0 +1,26 @@
+<%- include('../partials/header.ejs') %>
+
+<h2>All Users</h2>
+
+<table class="users-table">
+  <tr>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Role</th>
+    <th>Actions</th>
+  </tr>
+
+  <% users.forEach(user => { %>
+    <tr>
+      <td><%= user.userName %></td>
+      <td><%= user.email %></td>
+      <td><%= user.role %></td>
+      <td>
+        <a href="/users/<%= user._id %>">View</a>
+        <a href="/users/delete/<%= user._id %>">Delete</a>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+
+<%- include('../partials/footer.ejs') %>
