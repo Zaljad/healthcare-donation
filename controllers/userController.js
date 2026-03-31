@@ -58,7 +58,9 @@ const getUserById = async (req, res) => {
 
     res.send(data)
   } catch (error) {
-    res.status(500).send("⚠️ Error finding user! " + error.message)
+    res
+      .status(500)
+      .json({ menubar: "⚠️ Error finding user! ", error: error.message })
   }
 }
 
