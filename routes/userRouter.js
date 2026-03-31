@@ -3,12 +3,12 @@ const router = express.Router()
 
 const userController = require("../controllers/userController.js")
 
-router.get("/profile", userController.showProfilePage)
-router.put("/profile", userController.updateUser)
+router.get("/show-profile-page", userController.showProfilePage)
+router.put("/update-user-profile", userController.updateUser)
 
-router.get("/users", userController.getAllUsers)
-router.get("/users/:id", userController.getUserById)
+router.get("/get-all-Users", userController.getAllUsers)
+router.get("/:id", userController.getUserById)
 
-router.delete("/users/:id", userController.deleteUser)
+router.delete("/:id", userController.deleteUser)
 
 module.exports = router
