@@ -9,7 +9,6 @@ const app = express()
 const authRouter = require("./routes/authRouter")
 const userRouter = require("./routes/userRouter")
 const donationRouter = require("./routes/donationRouter")
-const authRouter = require("./routes/authRouter")
 const medicalTollsRouter = require("./routes/medicalToolsRouter")
 
 const dns = require("dns")
@@ -35,7 +34,6 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use("/auth", authRouter)
 app.use("/user", userRouter)
 app.use("/donation", donationRouter)
-app.use("/auth", authRouter)
 app.use("/medicalEquipment", medicalTollsRouter)
 
 app.get("/", (req, res) => {
