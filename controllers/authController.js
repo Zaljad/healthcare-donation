@@ -50,7 +50,8 @@ const signInUser = async(req,res)=>{
 
     req.session.user ={
       email: user.email,
-      _id: user._id
+      _id: user._id,
+      role: user.role
     }
 
     req.session.save(()=>{

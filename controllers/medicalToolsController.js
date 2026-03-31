@@ -47,6 +47,11 @@ const getToolsByCategory = async (req, res) => {
 
 const updateTool = async (req, res) => {
   try{
+
+    if (!req.session.user || req.session.user.role !== 'admin'){
+      return res.send('❌ Access denied!')
+    }
+
     const tool = await MedicalEquipment.findByIdAndUpdate(req.params.id,req.body,{new: true, runValidator: true})
     if (!tool){
       return res.send ('Tool is not exist❗')
@@ -59,6 +64,9 @@ const updateTool = async (req, res) => {
 
 const deleteTool = async (req, res) => {
   try {
+    if (!req.session.user || req.session.user.role !== 'admin'){
+      return res.send('❌ Access denied!')
+    }
     const tool = await MedicalEquipment.findByIdAndDelete(req.params.id)
 
     if(!tool){

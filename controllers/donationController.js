@@ -1,13 +1,24 @@
 const Donation = require("../models/Donation")
+const MedicalEquipment = require('../models/MedicalEquipment');
 
 const createDonation = async (req, res) => {
   try {
     if (!req.session.user)
       return res.status(401).json({ message: "Please login first" })
 
+    const newTool = await MedicalEquipment.create({
+      equipmentName: req.body.equipmentName,
+      category: req.body.category,
+      equipmentImg: req.body.equipmentImg,
+      description: req.body.description,
+      price: req.body.price,
+      status: 'available'
+    })
+
     const donation = await Donation.create({
       donor: req.session.user._id,
       equipment: req.params.equipmentId,
+      status: 'pending'
     })
 
     res.status(201).json(donation)
