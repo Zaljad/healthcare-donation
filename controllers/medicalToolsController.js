@@ -44,9 +44,36 @@ const getToolsByCategory = async (req, res) => {
   }
 }
 
+const updateTool = async (req, res) => {
+  try{
+    const tool = await MedicalEquipment.findByIdAndUpdate(req.params.id,req.body,{new: true})
+    if (!tool){
+      return res.send ('Tool is not exist❗')
+    }
+    res.send(`${tool.id} is updated successfully ✨`)
+  } catch (error){
+    console.error('⚠️ Error updating equipment', error.message)
+  }
+}
+
+const deleteTool = async (req, res) => {
+  try {
+    const tool = await MedicalEquipment.findByIdAndDelete(req.params.id)
+
+    if(!tool){
+      return res.send('Tool is not exist❗')
+    }
+    res.send(`${tool.id} is deleted successfully 🪦`)
+  } catch (error) {
+    console.error('⚠️ Error deleting equipment', error.message)
+  }
+}
+
 module.exports = {
   createTool,
   getAllTools,
   getToolById,
-  getToolsByCategory
+  getToolsByCategory,
+  updateTool,
+  deleteTool
 }
