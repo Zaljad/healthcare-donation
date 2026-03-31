@@ -4,39 +4,47 @@ const Request = require("../models/Request.js")
 
 const showProfilePage = async (req, res) => {
   try {
-    res.send("Profile Page")
+    res.status(200).json({ message: "Profile Page" })
   } catch (error) {
-    res
-      .status(404)
-      .json({ message: "⚠️ Error showing Profile Page!", error: error.message })
+    res.status(500).json({
+      message: "⚠️ Error showing Profile Page!",
+      error: error.message,
+    })
   }
 }
 
 const getAllUsers = async (req, res) => {
   try {
-    if (!req.session.user) return res.send("Please login first")
+    if (!req.session.user)
+      return res.status(401).json({ message: "Please login first" })
 
     if (req.session.user.role !== "admin") {
-      return res.send("Access denied")
+      return res.status(403).json({ message: "Access denied" })
     }
 
     const users = await User.find()
 
-    res.send(users)
+    res.status(200).json(users)
   } catch (error) {
-    res.status(500).send(error.message)
+    res.status(500).json({
+      message: "Error fetching users",
+      error: error.message,
+    })
   }
 }
 
 const getUserById = async (req, res) => {
   try {
-    if (!req.session.user) return res.send("Please login first")
+    if (!req.session.user)
+      return res.status(401).json({ message: "Please login first" })
 
     if (req.session.user.role !== "admin") {
-      return res.send("Access denied")
+      return res.status(403).json({ message: "Access denied" })
     }
 
     const user = await User.findById(req.params.id)
+
+    if (!user) return res.status(404).json({ message: "User not found" })
 
     const donations = await Donation.find({ donor: user._id }).populate(
       "equipment"
@@ -56,44 +64,57 @@ const getUserById = async (req, res) => {
       requests,
     }
 
-    res.send(data)
+    res.status(200).json(data)
   } catch (error) {
-    res
-      .status(500)
-      .json({ menubar: "⚠️ Error finding user! ", error: error.message })
+    res.status(500).json({
+      message: "⚠️ Error finding user!",
+      error: error.message,
+    })
   }
 }
 
 const updateUser = async (req, res) => {
   try {
+    if (!req.session.user)
+      return res.status(401).json({ message: "Please login first" })
+
     const userId = req.session.user._id
 
     const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
       new: true,
     })
 
-    res.send({
+    res.status(200).json({
       message: "User updated successfully",
       user: updatedUser,
     })
   } catch (error) {
-    res.status(500).send(error.message)
+    res.status(500).json({
+      message: "Error updating user",
+      error: error.message,
+    })
   }
 }
 
 const deleteUser = async (req, res) => {
   try {
-    if (!req.session.user) return res.send("Please login first")
+    if (!req.session.user)
+      return res.status(401).json({ message: "Please login first" })
 
     if (req.session.user.role !== "admin") {
-      return res.send("Access denied")
+      return res.status(403).json({ message: "Access denied" })
     }
 
-    await User.findByIdAndDelete(req.params.id)
+    const deletedUser = await User.findByIdAndDelete(req.params.id)
 
-    res.send("User deleted successfully")
+    if (!deletedUser) return res.status(404).json({ message: "User not found" })
+
+    res.status(200).json({ message: "User deleted successfully" })
   } catch (error) {
-    res.status(500).send(error.message)
+    res.status(500).json({
+      message: "Error deleting user",
+      error: error.message,
+    })
   }
 }
 
