@@ -75,6 +75,22 @@ const getRequestByStatus = async (req, res) => {
   }
 }
 
+const getUserRequests = async (req, res) =>{
+  try {
+    const requests = await Request.find ({ requestedUser: req.session.user._id})
+    .populate('equipment')
+    .sort({ createAt: -1})
+
+    if(request.length === 0){
+      return res.send('You have no requests yet')
+    }
+
+    res.send(requests)
+  } catch (error) {
+    res.send('⚠️ Error fetching requests!'), error.message
+  }
+}
+
 const updateRequestStatus = async (req,res) => {
   try {
     if (!req.session.user || req.session.user.role !== 'admin'){
@@ -123,6 +139,7 @@ module.exports = {
   createRequest,
   getAllRequests,
   getRequestByStatus,
+  getUserRequests,
   updateRequestStatus,
   deleteRequest
 }
