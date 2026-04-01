@@ -2,17 +2,6 @@ const User = require("../models/User.js")
 const Donation = require("../models/Donation.js")
 const Request = require("../models/Request.js")
 
-const showProfilePage = async (req, res) => {
-  try {
-    res.render("./users/profile.ejs")
-  } catch (error) {
-    res.status(500).json({
-      message: "⚠️ Error showing Profile Page!",
-      error: error.message,
-    })
-  }
-}
-
 const getAllUsers = async (req, res) => {
   try {
     if (!req.session.user || req.session.user.role !== "admin") {
@@ -30,11 +19,7 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    if (!req.session.user || req.session.user.role !== "admin") {
-      return res.status(403).json({ message: "Access denied" })
-    }
-
-    const user = await User.findById(req.params.id).select("-password")
+    const user = await User.findById(req.params.id)
 
     if (!user) return res.status(404).json({ message: "User not found" })
 
@@ -64,22 +49,38 @@ const getUserById = async (req, res) => {
   }
 }
 
+const editUserForm = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.user._id)
+
+    if (!user) return res.status(404).json({ message: "User not found" })
+
+    res.render("./users/edit.ejs", { user })
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error loading edit form", error: error.message })
+  }
+}
+
 const updateUser = async (req, res) => {
   try {
-    const userId = req.session.user._id
+    const user = await User.findById(req.session.user._id)
 
-    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
-      new: true,
-    })
+    if (!user) return res.status(404).json({ message: "User not found" })
 
-    res.render("./users/edit.ejs", {
-      user: updatedUser,
-    })
+    user.userName = req.body.userName
+    user.email = req.body.email
+    user.phoneNum = req.body.phoneNum
+    user.address = req.body.address
+
+    await user.save()
+
+    res.redirect(`/users/${user._id}?success=1`)
   } catch (error) {
-    res.status(500).json({
-      message: "Error updating user",
-      error: error.message,
-    })
+    res
+      .status(500)
+      .json({ message: "Error updating user", error: error.message })
   }
 }
 
@@ -103,9 +104,9 @@ const deleteUser = async (req, res) => {
 }
 
 module.exports = {
-  showProfilePage,
   getAllUsers,
   getUserById,
+  editUserForm,
   updateUser,
   deleteUser,
 }

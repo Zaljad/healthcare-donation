@@ -38,7 +38,7 @@ app.use(
 app.use(middleware.passUserToView)
 
 app.use("/auth", authRouter)
-app.use("/user", userRouter)
+app.use("/users", userRouter)
 app.use("/donation", donationRouter)
 app.use("/medicalEquipment", medicalTollsRouter)
 app.use("/request", requestRouter)

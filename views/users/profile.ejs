@@ -1,11 +1,34 @@
 <%- include('../partials/header.ejs') %>
 
-<h2>Profile Page</h2>
+<h2>User Details</h2>
 
-<p>Welcome, <%= user.userName %></p>
+<p>Name: <%= user.userName %></p>
 <p>Email: <%= user.email %></p>
 <p>Phone: <%= user.phoneNum %></p>
 <p>Address: <%= user.address %></p>
 <p>Role: <%= user.role %></p>
+<a href="/users/edit-profile">Edit Profile</a>
+
+<h3>Donations</h3>
+<ul>
+  <% if (user.donations && user.donations.length > 0) { %>
+    <% user.donations.forEach(d => { %>
+      <li><%= d.equipment?.equipmentName %> - <%= d.status %></li>
+    <% }) %>
+  <% } else { %>
+    <li>No donations yet.</li>
+  <% } %>
+</ul>
+
+<h3>Requests</h3>
+<ul>
+  <% if (user.requests && user.requests.length > 0) { %>
+    <% user.requests.forEach(r => { %>
+      <li><%= r.equipment?.equipmentName %> - <%= r.status %></li>
+    <% }) %>
+  <% } else { %>
+    <li>No requests yet.</li>
+  <% } %>
+</ul>
 
 <%- include('../partials/footer.ejs') %>

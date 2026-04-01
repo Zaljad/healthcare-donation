@@ -43,7 +43,7 @@ const signInUser = async (req, res) => {
       role: user.role,
     }
     req.session.save(() => {
-      res.redirect(`/users/${user.userName}✨`)
+      res.redirect(`/users/${user._id}`)
     })
   } catch (error) {
     console.error("⚠️ An error has occurred signing in a user!", error.message)
