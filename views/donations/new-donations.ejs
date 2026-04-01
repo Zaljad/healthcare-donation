@@ -7,7 +7,59 @@
       <p>Please enter the details of the equipment you want to donate with.
         <br> Your contribution helps those in need></p>
         <hr>
-        
+
+        <form action="/donation/create-donation" method="POST">
+
+          <div class="form-item">
+            <label for="equipmentName">Equipment Name:</label>
+            <input type="text"
+            id="equipmentName"
+            name="equipmentName"
+            >
+          </div>
+
+          <div class="form-item">
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+              <option value="" display selected>select a category..</option>
+              <option value="Mobility">Mobility Aids (Crutches, Wheelchairs..)</option>
+              <option value="Respiratory">Respiratory Devices</option>
+              <option value="Monitoring">Monitoring Devices (BP, Glucose)</option>
+              <option value="General">General Medical Tools</option>
+            </select>
+          </div>
+
+          <div class="form-item">
+            <label for="equipmentImg">Equipment Image URL (optional):</label>
+            <input type="url"
+            id="equipmentImg"
+            name="equipmentImg"
+            placeholder="http://example.com/image.jpg">
+          </div>
+
+          <div class="form-item">
+            <label for="price">Estimated Value (BHD):</label>
+            <input type="number"
+            id="price"
+            name="price">
+          </div>
+
+          <div class="form-item">
+            <label for="description">Description:</label>
+            <textarea
+            id="description"
+            name="description"
+            row="4"
+            required
+            placeholder="http://example.com/image.jpg">
+          </div>
+
+          <div class="form-btn">
+            <button type="submit" class="btn-main">Submit Donation</button>
+            <a href="/" class="btn-secondary">Cancel</a>
+          </div>
+
+        </form>
     </div>
   </div>
 

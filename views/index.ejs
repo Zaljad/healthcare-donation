@@ -1,12 +1,13 @@
 <%- include('./partials/header.ejs') %>
-
-<% if (user) { %>
-  <h1>Welcome to the app, <%= user.username %>!</h1>
-  <p>Use the navigation above to access your medicalEquipment ,donation , request and user </p>
-  <% }
-  else { %>
-    <h1>Welcome to Healthcare Donation 🩺🤝, guest.</h1>
-    <p>Please Sign in or sign up to get started..</p>
-    <% } %>
-
+  <div class="welcome-card">
+    <div class="card-content">
+      <h1>Welcome to Healthcare Donation 🩺🤝</h1>
+      <h3>Sign in or sign up to get started..</h3>
+      <div>
+        <a href="/auth/sign-in" class="btn-main">Sign In</a>
+        <a href="/auth/sign-up" class="btn-secondary">Sign Up</a>
+      </div>
+    </div>
+</div>
 <%- include('./partials/footer.ejs') %>
+

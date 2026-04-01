@@ -1,0 +1,57 @@
+<%- include('../partials/header') %>
+<main class="container">
+  
+
+      <h2>Donation History 📋</h2>
+
+    <p>Track and manage all your medical equipment contribution.</p>
+    <hr>
+
+    <div class="grid-container">
+      <% if(donations.length >0){ %>
+        <% donations.forEach(donation =>{%>
+
+          <div class="card-info">
+            <div class="card-media">
+              <% if(donation.equipment.equipmentImg){ %>
+                <img src="<%= donation.equipment.equipmentImg%>">
+              <% } else{ %>
+                <div class="img-placeholder">No Image</div>
+              <% } %>
+              </div>
+
+              <div class="card-body">
+                <div class="card-meta">
+
+                  <span class="populate-category-lable">
+                    <%= donation.equipment.category %>
+                  </span>
+
+                  <h3 class="card-title"><%= donation.equipment.equipmentName %></h3>
+
+                  <span class="badge status">
+                    <%= donation.status %>
+                  </span>
+                </div>
+                  <div class="card-footer">
+                    <span class="date">
+                      <%= new Date(donation.createdAt).toLocaleDateString() %>
+                    </span>
+
+                    <span class="id">
+                      <%= donation._id %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+              <% } else{ %>
+                <p>No donations found yet</p>
+              <% } %>
+            </div>
+          </div>
+        <a href="/donation/new" class="btn-main btn-botom">
+        + New Donation
+      </a>
+</main>
+<%- include('../partials/footer') %>
