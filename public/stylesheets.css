@@ -1,0 +1,10 @@
+.welcome-card h1{
+  color: #2c3e50;
+  font-size: 2rem;
+}
+.card-content{
+  display:flex;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 20px;
+}
