@@ -14,15 +14,13 @@ const createDonation = async (req, res) => {
 
     const donation = await Donation.create({
       donor: req.session.user._id,
-      equipment: req.params.equipmentId,
+      equipment: newTool._id,
       status: "pending",
     })
 
-    res.status(201).json(donation)
+    res.redirect("/donation/get-all-donations", {donations})
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating donation", error: error.message })
+    res.status( error.message )
   }
 }
 
@@ -32,10 +30,9 @@ const getAllDonations = async (req, res) => {
       .populate("donor")
       .populate("equipment")
 
-    res.status(200).json(donations)
+    res.render("donations/index.ejs",{donations})
   } catch (error) {
-    res
-      .status(500)
+      res.status(500)
       .json({ message: "Error fetching donations", error: error.message })
   }
 }
@@ -51,7 +48,7 @@ const getDonationById = async (req, res) => {
 
     res.status(200).json(donation)
   } catch (error) {
-    res
+    res.render("donations/show.ejs", {donations})
       .status(500)
       .json({ message: "Error fetching donation", error: error.message })
   }
