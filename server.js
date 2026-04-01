@@ -28,6 +28,12 @@ app.use(
     }),
   })
 )
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user ? req.user : null;
+  next();
+})
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, "public")))
@@ -39,7 +45,7 @@ app.use("/medicalEquipment", medicalTollsRouter)
 app.use("/request", requestRouter)
 
 app.get("/", (req, res) => {
-  res.send("Medical Equipment Donation API is running 🩺🤝")
+  res.render("index.ejs")
 })
 
 const PORT = process.env.PORT ? process.env.PORT : 3000
