@@ -22,7 +22,7 @@ const registerUser = async (req, res) => {
       role: req.body.role || 'user'
     })
 
-    res.send('🙏 Thanks for signing up!')
+    res.redirect('/auth/sign-in')
 
   } catch (error) {
     console.error('⚠️ An error has occurred registering a user!', error.message)
