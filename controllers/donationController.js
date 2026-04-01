@@ -1,24 +1,21 @@
 const Donation = require("../models/Donation")
-const MedicalEquipment = require('../models/MedicalEquipment');
+const MedicalEquipment = require("../models/MedicalEquipment")
 
 const createDonation = async (req, res) => {
   try {
-    if (!req.session.user)
-      return res.status(401).json({ message: "Please login first" })
-
     const newTool = await MedicalEquipment.create({
       equipmentName: req.body.equipmentName,
       category: req.body.category,
       equipmentImg: req.body.equipmentImg,
       description: req.body.description,
       price: req.body.price,
-      status: 'available'
+      status: "available",
     })
 
     const donation = await Donation.create({
       donor: req.session.user._id,
       equipment: req.params.equipmentId,
-      status: 'pending'
+      status: "pending",
     })
 
     res.status(201).json(donation)
@@ -31,9 +28,6 @@ const createDonation = async (req, res) => {
 
 const getAllDonations = async (req, res) => {
   try {
-    if (!req.session.user)
-      return res.status(401).json({ message: "Please login first" })
-
     const donations = await Donation.find()
       .populate("donor")
       .populate("equipment")
@@ -65,10 +59,7 @@ const getDonationById = async (req, res) => {
 
 const updateStatusDonation = async (req, res) => {
   try {
-    if (!req.session.user)
-      return res.status(401).json({ message: "Please login first" })
-
-    if (req.session.user.role !== "admin")
+    if (!req.session.user || req.session.user.role !== "admin")
       return res.status(403).json({ message: "Access denied" })
 
     const { status } = req.body
