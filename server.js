@@ -10,6 +10,7 @@ const authRouter = require("./routes/authRouter")
 const userRouter = require("./routes/userRouter")
 const donationRouter = require("./routes/donationRouter")
 const medicalTollsRouter = require("./routes/medicalToolsRouter")
+const requestRouter = require("./routes/requestRouter")
 
 const dns = require("dns")
 dns.setServers(["8.8.8.8", "1.1.1.1"])
@@ -35,6 +36,7 @@ app.use("/auth", authRouter)
 app.use("/user", userRouter)
 app.use("/donation", donationRouter)
 app.use("/medicalEquipment", medicalTollsRouter)
+app.use("/request", requestRouter)
 
 app.get("/", (req, res) => {
   res.send("Medical Equipment Donation API is running 🩺🤝")
