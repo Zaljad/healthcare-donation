@@ -4,7 +4,13 @@ const morgan = require("morgan")
 const methodOverride = require("method-override")
 const session = require("express-session")
 const { MongoStore } = require("connect-mongo")
+const middleware = require("./middleware")
 const path = require("path")
+
+const dns = require("dns")
+dns.setServers(["8.8.8.8", "1.1.1.1"])
+const db = require("./db")
+
 const app = express()
 const authRouter = require("./routes/authRouter")
 const userRouter = require("./routes/userRouter")
@@ -12,10 +18,11 @@ const donationRouter = require("./routes/donationRouter")
 const medicalTollsRouter = require("./routes/medicalToolsRouter")
 const requestRouter = require("./routes/requestRouter")
 
-const dns = require("dns")
-dns.setServers(["8.8.8.8", "1.1.1.1"])
-const db = require("./db")
+const PORT = process.env.PORT ? process.env.PORT : 3000
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.static(path.join(__dirname, "public")))
 app.use(morgan("dev"))
 app.use(methodOverride("_method"))
 app.use(
@@ -28,15 +35,7 @@ app.use(
     }),
   })
 )
-
-app.use((req, res, next) => {
-  res.locals.user = req.session.user ? req.user : null;
-  next();
-})
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(express.static(path.join(__dirname, "public")))
+app.use(middleware.passUserToView)
 
 app.use("/auth", authRouter)
 app.use("/user", userRouter)
@@ -47,8 +46,6 @@ app.use("/request", requestRouter)
 app.get("/", (req, res) => {
   res.render("index.ejs")
 })
-
-const PORT = process.env.PORT ? process.env.PORT : 3000
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT} 🚀 `)
