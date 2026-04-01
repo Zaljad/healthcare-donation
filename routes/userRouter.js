@@ -11,4 +11,7 @@ router.get("/:id", userController.getUserById)
 
 router.delete("/:id", userController.deleteUser)
 
+router.get("/show-profile-page", (req, res) => {
+  res.render("./users/profile.ejs")
+})
 module.exports = router

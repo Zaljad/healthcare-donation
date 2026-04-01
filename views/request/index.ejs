@@ -1,0 +1,38 @@
+<%- include('../partials/header.ejs') %>
+
+<h2>All Requests</h2>
+
+<table class="requests-table">
+  <tr>
+    <th>User</th>
+    <th>Email</th>
+    <th>Equipment</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+
+  <% requests.forEach(request => { %>
+    <tr>
+      <td><%= request.requestedUser?.userName %></td>
+      <td><%= request.requestedUser?.email %></td>
+      <td><%= request.equipment?.equipmentName %></td>
+      <td><%= request.status %></td>
+      <td>
+
+        <form action="/requests/update/<%= request._id %>" method="POST">
+          <select name="status" required>
+            <option value="pending" <%= request.status === 'pending' ? 'selected' : '' %>>Pending</option>
+            <option value="approved" <%= request.status === 'approved' ? 'selected' : '' %>>Approve</option>
+            <option value="rejected" <%= request.status === 'rejected' ? 'selected' : '' %>>Reject</option>
+          </select>
+          <button type="submit">Update</button>
+        </form>
+
+        <a href="/requests/delete/<%= request._id %>">Delete</a>
+
+      </td>
+    </tr>
+  <% }) %>
+</table>
+
+<%- include('../partials/footer.ejs') %>
