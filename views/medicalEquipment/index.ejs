@@ -1,0 +1,36 @@
+<%- include('../partials/header') %>
+<div class="container">
+  <div class="main-title">
+    <h2>Available Medical Equipment</h2>
+  </div>
+
+  <div class="grid-container">
+    <% if(tools&& tools.length>0){%>
+      <%tools.forEach(tool => {%>
+        <div class="card-info">
+          <div class="card-media">
+            <% if(tool.equipmentImg) {%>
+              <img src="<%= tool.equipmentImg %>" alt="<%= tool.equipmentName %>">
+            <%} else{%>
+              <div class="img-placeholder">No Image</div>
+            <%}%>
+          </div>
+
+          <div class="card-body">
+            <span class="populate-category-lable"><%= tool.category %></span>
+            <h3 class="card-title"><%= tool.equipmentName%></h3>
+            <p class="status"><%= tool.status%></p>
+            <div class="card-footer">
+              <span>Price: <%= tool.price%></span>
+              <a href="/medicalEquipment/<%= tool._id %>" class="btn-main">View Details</a>
+            </div>
+          </div>
+        </div>
+        <%})%>
+        <%}else{%>
+          <p>No medical equipment available at the moment</p>
+          <%}%>
+  </div>
+
+</div>
+<%- include('../partials/footer') %>

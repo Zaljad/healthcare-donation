@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+<div class="container">
+  <div class="card-info">
+    <div class="main-title">
+      <h2><%= tool.equipmentName%></h2>
+    </div>
+
+    <% if(tool.equipmentImg) {%>
+              <img src="<%= tool.equipmentImg %>" alt="<%= tool.equipmentName %>">
+            <%} else{%>
+              <div class="img-placeholder">No Image</div>
+            <%} %>
+
+            <div class="card-info">
+                          <p><strong>Category:</strong> <%= tool.category %></p>
+            <p><strong>Status:</strong><%= tool.status%></p>
+            <P><strong>Price:</strong> <%= tool.price%></P>
+            <p><strong>Description:</strong><%= tool.description%></p>
+
+            <a href="/medicalEquipment/get-all-tools" class="btn-secondary">Back to List</a>
+
+            <% if (user && user.role === 'admin') {%>
+              <a href="/medicalEquipment/<%= tool._id %>/edit" class="btn-main">Edit Tool</a>
+
+              <form action="/medicalEquipment/<%= tool._id %>?_method=DELETE" method="POST">
+                <button type="submit" class="btn-secondary">Delete tool</button>
+              </form>
+              <%}%>
+  </div>
+
+</div>
+<%- include('../partials/footer') %>

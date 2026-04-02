@@ -17,9 +17,9 @@
         <%= donation.equipment.category%>
       </span>
       <h3 class="card-title"><%= donation.equipment.equipmentName %></h3>
-      <p><strong>Description:</strong><% donation.equipment.description%></p>
-      <p><strong>Price:</strong><% donation.equipment.price%></p>
-      <p><strong>Status:</strong><% donation.equipment.status%></p>
+      <p><strong>Description:</strong><%= donation.equipment.description%></p>
+      <p><strong>Price:</strong><%= donation.equipment.price%></p>
+      <p><strong>Status:</strong><%= donation.equipment.status%></p>
 
       <div class="card-footer">
         <span class="date"><%= new Date(donation.createdAt).toLocaleDateString() %></span>
