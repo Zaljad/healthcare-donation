@@ -1,43 +1,57 @@
 <%- include('../partials/header') %>
+
 <div class="container">
   <div class="main-title">
     <h2>Available Medical Equipment</h2>
   </div>
 
   <div class="grid-container">
-    <% if(tools&& tools.length>0){%>
-      <%tools.forEach(tool => {%>
+    <% if (tools && tools.length > 0) { %>
+      <% tools.forEach(tool => { %>
+
         <div class="card-info">
           <div class="card-media">
-            <% if(tool.equipmentImg) {%>
+            <% if (tool.equipmentImg) { %>
               <img src="<%= tool.equipmentImg %>" alt="<%= tool.equipmentName %>">
-            <%} else{%>
+            <% } else { %>
               <div class="img-placeholder">No Image</div>
-            <%}%>
+            <% } %>
           </div>
 
           <div class="card-body">
             <span class="populate-category-lable"><%= tool.category %></span>
-            <h3 class="card-title"><%= tool.equipmentName%></h3>
-            <p class="status"><%= tool.status%></p>
-            <div class="card-footer">
-              <span>Price: <%= tool.price%></span>
-              <a href="/medicalEquipment/<%= tool._id %>" class="btn-main">View Details</a>
 
-              <%if (tool.status === 'available'){%>
-                <a href="/requests/create/<%tool._id%>" class="btn-main">Request Tool</a>
-                <%} else{%>
-                  <span class="btn-secondary">Not Available</span>
-                  <%}%>
+            <h3 class="card-title"><%= tool.equipmentName %></h3>
+
+            <p class="status"><%= tool.status %></p>
+
+            <div class="card-footer">
+              <span>Price: <%= tool.price %></span>
+
+              <a href="/medicalEquipment/<%= tool._id %>" class="btn-main">
+                View Details
+              </a>
+
+              <% if (tool.status === 'available') { %>
+                <form action="/requests/create/<%= tool._id %>" method="POST" style="display:inline;">
+                  <button type="submit" class="btn-main">
+                    Request Tool
+                  </button>
+                </form>
+              <% } else { %>
+                <span class="btn-secondary">Not Available</span>
+              <% } %>
 
             </div>
           </div>
         </div>
-        <%})%>
-        <%}else{%>
-          <p>No medical equipment available at the moment</p>
-          <%}%>
-  </div>
 
+      <% }) %>
+    <% } else { %>
+      <p>No medical equipment available at the moment</p>
+    <% } %>
+  </div>
 </div>
+
 <%- include('../partials/footer') %>
+</div>
