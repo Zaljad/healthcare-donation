@@ -12,6 +12,5 @@ router.get("/new", (req, res) => {
 router.post("/create-donation", donationController.createDonation)
 router.get("/get-all-donations", donationController.getAllDonations)
 router.get("/:id", donationController.getDonationById)
-router.put("/:id/update", donationController.updateStatusDonation)
 
 module.exports = router
