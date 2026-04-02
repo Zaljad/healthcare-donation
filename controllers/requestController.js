@@ -1,9 +1,21 @@
 const Request = require("../models/Request")
 const MedicalEquipment = require("../models/MedicalEquipment")
 
+const showCreateForm = async (req, res) => {
+  try {
+    const equipment = await MedicalEquipment.findById(req.params.id)
+    if (!equipment) return res.send("Equipment not found")
+
+    res.render("requests/create", { equipment })
+  } catch (err) {
+    console.log(err)
+    res.send("Error loading create form")
+  }
+}
+
 const createRequest = async (req, res) => {
   try {
-    const equipment = await MedicalEquipment.findById(req.body.equipment)
+    const equipment = await MedicalEquipment.findById(req.params.id)
 
     if (!equipment || equipment.status !== "available") {
       return res.send("Equipment not available")
@@ -11,10 +23,10 @@ const createRequest = async (req, res) => {
 
     await Request.create({
       requestedUser: req.session.userId,
-      equipment: req.body.equipment,
+      equipment: req.params.id,
     })
 
-    res.redirect("/requests/create")
+    res.redirect("/requests/my-request")
   } catch (err) {
     console.log(err)
     res.send("Error creating request")
@@ -44,7 +56,7 @@ const getAllRequests = async (req, res) => {
       .populate("requestedUser")
       .populate("equipment")
 
-    res.render("requests/index", { requests })
+    res.render("requests/index", { requests, successMessage: null })
   } catch (err) {
     console.log(err)
     res.send("Error loading requests")
@@ -63,7 +75,7 @@ const getRequestByStatus = async (req, res) => {
       .populate("requestedUser")
       .populate("equipment")
 
-    res.render("requests/index", { requests })
+    res.render("requests/index", { requests, successMessage: null })
   } catch (err) {
     console.log(err)
     res.send("Error filtering requests")
@@ -77,10 +89,7 @@ const updateRequestStatus = async (req, res) => {
     }
 
     const request = await Request.findById(req.params.id)
-
-    if (!request) {
-      return res.send("Request not found")
-    }
+    if (!request) return res.send("Request not found")
 
     request.status = req.body.status
     await request.save()
@@ -89,9 +98,7 @@ const updateRequestStatus = async (req, res) => {
       await MedicalEquipment.findByIdAndUpdate(request.equipment, {
         status: "reserved",
       })
-    }
-
-    if (req.body.status === "rejected") {
+    } else if (req.body.status === "rejected") {
       await MedicalEquipment.findByIdAndUpdate(request.equipment, {
         status: "available",
       })
@@ -111,7 +118,6 @@ const deleteRequest = async (req, res) => {
     }
 
     await Request.findByIdAndDelete(req.params.id)
-
     res.redirect("/requests")
   } catch (err) {
     console.log(err)
@@ -120,6 +126,7 @@ const deleteRequest = async (req, res) => {
 }
 
 module.exports = {
+  showCreateForm,
   createRequest,
   getUserRequests,
   getAllRequests,

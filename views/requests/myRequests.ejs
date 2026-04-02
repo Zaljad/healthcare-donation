@@ -1,0 +1,30 @@
+<%- include('../partials/header.ejs') %>
+
+<h2>My Requests</h2>
+
+<% if (!requests || requests.length === 0) { %>
+  <p>No requests yet.</p>
+  <p>
+    <a href="/medicalEquipment">Click here to make a new request</a>
+  </p>
+<% } else { %>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+      <th>Medical Equipment</th>
+      <th>Status</th>
+    </tr>
+
+    <% requests.forEach(r => { %>
+      <tr>
+        <td><%= r.equipment?.equipmentName %></td>
+        <td><%= r.status %></td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <p>
+    <a href="/medicalEquipment">Add a new request</a>
+  </p>
+<% } %>
+
+<%- include('../partials/footer.ejs') %>

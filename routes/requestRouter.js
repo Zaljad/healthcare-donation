@@ -5,8 +5,11 @@ const middleware = require("../middleware")
 
 const requestController = require("../controllers/requestController")
 
-router.post("/create", requestController.createRequest)
+router.get("/create/:id", requestController.showCreateForm)
+router.post("/create/:id", requestController.createRequest)
+
 router.get("/my-request", requestController.getUserRequests)
+
 router.get("/", requestController.getAllRequests)
 router.get("/status/:status", requestController.getRequestByStatus)
 router.post("/update/:id", requestController.updateRequestStatus)
