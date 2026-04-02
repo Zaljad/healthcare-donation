@@ -24,7 +24,7 @@ const PORT = process.env.PORT ? process.env.PORT : 3000
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, "public")))
-app.use(express.urlencoded({extended: fstat}))
+app.use(express.urlencoded({ extended: fstat }))
 app.use(morgan("dev"))
 app.use(methodOverride("_method"))
 app.use(
@@ -43,7 +43,7 @@ app.use("/auth", authRouter)
 app.use("/users", userRouter)
 app.use("/donation", donationRouter)
 app.use("/medicalEquipment", medicalTollsRouter)
-app.use("/request", requestRouter)
+app.use("/requests", requestRouter)
 
 app.get("/", (req, res) => {
   res.render("index.ejs")
