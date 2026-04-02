@@ -13,22 +13,22 @@
 
           <div class="card-info">
             <div class="card-media">
-              <% if(donation.equipment.equipmentImg){ %>
-                <img src="<%= donation.equipment.equipmentImg%>">
-              <% } else{ %>
-                <div class="img-placeholder">No Image</div>
-              <% } %>
+<% if(donation.equipment?.equipmentImg){ %>
+  <img src="<%= donation.equipment.equipmentImg %>">
+<% } else { %>
+  <div class="img-placeholder">No Image</div>
+<% } %>
               </div>
 
               <div class="card-body">
                 <div class="card-meta">
 
-                  <span class="populate-category-lable">
-                    <%= donation.equipment.category %>
-                  </span>
+<span class="populate-category-lable">
+  <%= donation.equipment ? donation.equipment.category : 'No Category' %>
+</span>
 
                   <a href="/donation/<%= donation._id %>"></a>
-                  <h3 class="card-title"><%= donation.equipment.equipmentName %></h3>
+                  <h3 class="card-title"><%= donation.equipment?.equipmentName || 'Unknown Equipment' %></h3>
                   </a>
 
                   <span class="status">

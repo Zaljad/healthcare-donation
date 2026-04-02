@@ -7,30 +7,30 @@
     <input
       type="text"
       name="equipmentName"
-      value="<%= donation.equipment.equipmentName %>"
+      value="<%= donation.equipment?.equipmentName %>"
       placeholder="Name"
     />
 
     <input
       type="text"
       name="category"
-      value="<%= donation.equipment.category %>"
+      value="<%= donation.equipment?.category %>"
       placeholder="Category"
     />
 
     <input
       type="text"
       name="equipmentImg"
-      value="<%= donation.equipment.equipmentImg %>"
+      value="<%= donation.equipment?.equipmentImg %>"
       placeholder="Image URL"
     />
 
-    <textarea name="description"><%= donation.equipment.description %></textarea>
+    <textarea name="description"><%= donation.equipment?.description %></textarea>
 
     <input
       type="number"
       name="price"
-      value="<%= donation.equipment.price %>"
+      value="<%= donation.equipment?.price %>"
       placeholder="Price"
     />
 
