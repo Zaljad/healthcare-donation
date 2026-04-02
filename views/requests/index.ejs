@@ -1,0 +1,41 @@
+<%- include('../partials/header.ejs') %>
+
+<h2>All Requests</h2>
+
+<% if (successMessage) { %>
+  <p style="color: green;"><%= successMessage %></p>
+<% } %>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Email</th>
+    <th>Equipment</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+
+  <% requests.forEach(r => { %>
+    <tr>
+      <td><%= r.requestedUser?.userName %></td>
+      <td><%= r.requestedUser?.email %></td>
+      <td><%= r.equipment?.equipmentName %></td>
+      <td><%= r.status %></td>
+
+      <td>
+        <form action="/requests/update/<%= r._id %>" method="POST">
+          <select name="status">
+            <option value="pending">Pending</option>
+            <option value="approved">Approve</option>
+            <option value="rejected">Reject</option>
+          </select>
+          <button>Update</button>
+        </form>
+
+        <a href="/requests/delete/<%= r._id %>">Delete</a>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+
+<%- include('../partials/footer.ejs') %>

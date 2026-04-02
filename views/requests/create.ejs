@@ -2,16 +2,16 @@
 
 <h2>Request Equipment</h2>
 
-<div class="card">
+<div>
   <h3><%= equipment.equipmentName %></h3>
   <p>Status: <%= equipment.status %></p>
 
   <% if (equipment.status === 'available') { %>
     <form action="/requests/create/<%= equipment._id %>" method="POST">
-      <button type="submit">Send Request</button>
+      <button>Send Request</button>
     </form>
   <% } else { %>
-    <p style="color:red;">This equipment is not available</p>
+    <p style="color:red;">Not available</p>
   <% } %>
 </div>
 

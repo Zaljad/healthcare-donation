@@ -42,7 +42,7 @@ app.use("/auth", authRouter)
 app.use("/users", userRouter)
 app.use("/donation", donationRouter)
 app.use("/medicalEquipment", medicalTollsRouter)
-app.use("/request", requestRouter)
+app.use("/requests", requestRouter)
 
 app.get("/", (req, res) => {
   res.render("index.ejs")
