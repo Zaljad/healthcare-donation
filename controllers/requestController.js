@@ -21,15 +21,19 @@ const createRequest = async (req, res) => {
       return res.send("Equipment not available")
     }
 
+    if (!req.session.user) {
+      return res.send("You must be logged in")
+    }
+
     await Request.create({
-      requestedUser: req.session.userId,
+      requestedUser: req.session.user._id,
       equipment: req.params.id,
     })
 
     res.redirect("/requests/my-request")
   } catch (err) {
     console.log(err)
-    res.send("Error creating request")
+    res.send("Error creating request: " + err.message)
   }
 }
 
@@ -40,7 +44,6 @@ const getUserRequests = async (req, res) => {
     }).populate("equipment")
 
     res.render("requests/myRequests", { requests })
-
   } catch (err) {
     console.log(err)
     res.send("Error loading user requests")

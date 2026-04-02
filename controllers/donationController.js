@@ -34,6 +34,45 @@ const createDonation = async (req, res) => {
   }
 }
 
+const getEditDonationForm = async (req, res) => {
+  try {
+    const donation = await Donation.findById(req.params.id)
+      .populate("donor")
+      .populate("equipment")
+
+    if (!donation) {
+      return res.status(404).send("Donation not found")
+    }
+
+    res.render("donations/edit.ejs", { donation })
+  } catch (error) {
+    console.log(error)
+    res.send("Error loading edit page")
+  }
+}
+const updateDonation = async (req, res) => {
+  try {
+    const donation = await Donation.findById(req.params.id)
+
+    if (!donation) {
+      return res.send("Donation not found")
+    }
+
+    await MedicalEquipment.findByIdAndUpdate(donation.equipment, {
+      equipmentName: req.body.equipmentName,
+      category: req.body.category,
+      equipmentImg: req.body.equipmentImg,
+      description: req.body.description,
+      price: req.body.price,
+    })
+
+    res.redirect(`/donation/${req.params.id}`)
+  } catch (error) {
+    console.log(error)
+    res.send("Error updating donation")
+  }
+}
+
 const getAllDonations = async (req, res) => {
   try {
     const donations = await Donation.find()
@@ -101,6 +140,8 @@ const updateStatusDonation = async (req, res) => {
 
 module.exports = {
   createDonation,
+  getEditDonationForm,
+  updateDonation,
   getAllDonations,
   getDonationById,
   updateStatusDonation,

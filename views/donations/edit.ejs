@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <h2>Edit Donation</h2>
+
+  <form action="/donation/<%= donation._id %>/edit?_method=PUT" method="POST">
+    <input
+      type="text"
+      name="equipmentName"
+      value="<%= donation.equipment.equipmentName %>"
+      placeholder="Name"
+    />
+
+    <input
+      type="text"
+      name="category"
+      value="<%= donation.equipment.category %>"
+      placeholder="Category"
+    />
+
+    <input
+      type="text"
+      name="equipmentImg"
+      value="<%= donation.equipment.equipmentImg %>"
+      placeholder="Image URL"
+    />
+
+    <textarea name="description">
+<%= donation.equipment.description %></textarea
+    >
+
+    <input
+      type="number"
+      name="price"
+      value="<%= donation.equipment.price %>"
+      placeholder="Price"
+    />
+
+    <br /><br />
+
+    <button type="submit" class="btn-main">Update</button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

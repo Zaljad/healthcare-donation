@@ -1,0 +1,21 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <h2>Edit Donation Status</h2>
+
+  <form action="/donation/<%= donation._id %>?_method=PUT" method="POST">
+
+    <label>Status:</label>
+    <select name="status">
+      <option value="pending" <%= donation.status === 'pending' ? 'selected' : '' %>>Pending</option>
+      <option value="approved" <%= donation.status === 'approved' ? 'selected' : '' %>>Approved</option>
+      <option value="rejected" <%= donation.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit" class="btn-main">Update</button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>
