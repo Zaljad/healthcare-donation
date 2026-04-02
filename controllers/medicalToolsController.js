@@ -1,19 +1,9 @@
 const MedicalEquipment = require('../models/MedicalEquipment');
 
-const createTool =async (req, res) => {
-  try {
-    const toolData ={...req.body}
-    const newTool = await MedicalEquipment.create(toolData)
-    res.send(newTool)
-  } catch (error) {
-    console.error('⚠️ an error occurred creating a tool!', error.message)
-  }
-}
-
 const getAllTools = async (req,res) => {
   try {
     const tools = await MedicalEquipment.find({ status: 'available'})
-    res.send({tools})
+    res.render('medicalEquipment/index', {tools})
 
   } catch (error) {
     console.error('⚠️ Error getting Medical Equipments!', error.message)
@@ -26,7 +16,7 @@ const getToolById = async (req, res) => {
     if(!tool){
       return res.send('Tool is not exist❗')
     }
-    res.send(tool)
+    res.render('medicalEquipment/show', {tool})
   } catch (error) {
     console.error('⚠️ Error searching equipment', error.message)
   }
@@ -39,7 +29,7 @@ const getToolsByCategory = async (req, res) => {
     if(tools.length === 0){
       return res.send('No tools found in this category❗')
     }
-    res.send(tools)
+    res.render('medicalEquipment/index', {tools, categoryName: category})
   } catch (error) {
     console.error('⚠️ Error searching category', error.message)
   }
@@ -56,7 +46,7 @@ const updateTool = async (req, res) => {
     if (!tool){
       return res.send ('Tool is not exist❗')
     }
-    res.send(`${tool.id} is updated successfully ✨`)
+    res.redirect(`/medicalEquipment/${tool.id} `)
   } catch (error){
     console.error('⚠️ Error updating equipment', error.message)
   }
@@ -72,14 +62,13 @@ const deleteTool = async (req, res) => {
     if(!tool){
       return res.send('Tool is not exist❗')
     }
-    res.send(`${tool.id} is deleted successfully 🪦`)
+    res.redirect('medicalEquipment/get-all-tools')
   } catch (error) {
     console.error('⚠️ Error deleting equipment', error.message)
   }
 }
 
 module.exports = {
-  createTool,
   getAllTools,
   getToolById,
   getToolsByCategory,

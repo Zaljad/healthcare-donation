@@ -84,16 +84,17 @@ a{text-decoration: none;}
 }
 
 .card-info {
-  background-color: #ffffff;
-  border: 1px solid #D6E8EE;
+  background-color: #D6E8EE;
   border-radius: 12px;
   overflow: hidden;
   transition: 0.3s;
+  padding: 10px;
 }
 
 
 .card-info:hover{
   box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  padding: 10px;
 }
 
 .card-media img{

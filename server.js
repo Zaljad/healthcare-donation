@@ -12,6 +12,7 @@ dns.setServers(["8.8.8.8", "1.1.1.1"])
 const db = require("./db")
 
 const app = express()
+app.set('view engine', 'ejs');
 const authRouter = require("./routes/authRouter")
 const userRouter = require("./routes/userRouter")
 const donationRouter = require("./routes/donationRouter")
