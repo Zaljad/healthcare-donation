@@ -8,18 +8,24 @@
   </head>
   <body>
     <nav>
-      <a href="/">Home</a>
+  <a href="/">Home</a>
 
-      <% if(!user){ %>
-
-      <a href="/auth/sign-up"> Sign Up </a>
-      <a href="/auth/sign-in"> Sign In</a>
-      <% } else { %>
-      <a href="/medicalEquipment/get-all-tools">Medical Equipments</a>
-      <a href="/donation/get-all-donations">Donations</a>
-      <a href="/requests/my-request">Requests</a>
-      <a href="/users/<%= user._id %>">My Profile</a>
-      <a href="/auth/sign-out"> Sign Out</a>
-      <% } %>
-    </nav>
+  <% if(!user){ %>
+    <a href="/auth/sign-up">Sign Up</a>
+    <a href="/auth/sign-in">Sign In</a>
+  <% } else if(user.role === 'admin'){ %>
+    <a href="/medicalEquipment/get-all-tools">Medical Equipments</a>
+    <a href="/donation/get-all-donations">Donations</a>
+    <a href="/requests/all-request"> All Requests</a>
+    <a href="/users//get-all-Users">All Users</a>
+    <a href="/users/<%= user._id %>">My Profile</a>
+    <a href="/auth/sign-out">Sign Out</a>
+  <% } else { %>
+    <a href="/medicalEquipment/get-all-tools">Medical Equipments</a>
+    <a href="/donation/get-all-donations">Donations</a>
+    <a href="/requests/my-request">Requests</a>
+    <a href="/users/<%= user._id %>">My Profile</a>
+    <a href="/auth/sign-out">Sign Out</a>
+  <% } %>
+</nav>
     <main>
