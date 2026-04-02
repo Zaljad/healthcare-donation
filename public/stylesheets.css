@@ -55,12 +55,12 @@ a{text-decoration: none;}
 .btn-secondary:hover{
   transform: scale(1.1);
 }
-.form-card{
+/* .form-card{
   width:100%;
   max-width: 1000%;
   display: flex;
   gap: 10px;
-}
+} */
 .container{
   padding: 40px 20px;
   display:flex;
@@ -83,13 +83,14 @@ a{text-decoration: none;}
 
 }
 
-.card-info{
+.card-info {
   background-color: #ffffff;
   border: 1px solid #D6E8EE;
   border-radius: 12px;
   overflow: hidden;
   transition: 0.3s;
 }
+
 
 .card-info:hover{
   box-shadow: 0 6px 20px rgba(0,0,0,0.1);

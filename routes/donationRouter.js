@@ -4,7 +4,7 @@ const router = express.Router()
 const donationController = require("../controllers/donationController")
 
 router.get("/new", (req,res) => {
-  res.render("donation/new-donations.ejs")
+  res.render("donations/new-donations.ejs")
 })
 router.post("/create-donation", donationController.createDonation)
 
