@@ -5,8 +5,8 @@ const middleware = require("../middleware")
 
 const donationController = require("../controllers/donationController")
 
-router.get("/new", (req, res) => {
-  res.render("donation/new-donations.ejs")
+router.get("/new", (req,res) => {
+  res.render("donations/new-donations.ejs")
 })
 router.post("/create-donation", donationController.createDonation)
 
