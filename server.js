@@ -37,7 +37,7 @@ app.use(
   })
 )
 app.use(middleware.passUserToView)
-
+app.use(middleware.isSignedIn)
 app.use("/auth", authRouter)
 app.use("/users", userRouter)
 app.use("/donation", donationRouter)
