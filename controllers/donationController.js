@@ -3,7 +3,10 @@ const MedicalEquipment = require("../models/MedicalEquipment")
 
 const createDonation = async (req, res) => {
   try {
-    const userId= (req.session.user)? req.session.user._id: null
+    if (!req.session.user) {
+      return res.status(401).send("You must be logged in")
+    }
+
     const newTool = await MedicalEquipment.create({
       equipmentName: req.body.equipmentName,
       category: req.body.category,
@@ -19,9 +22,15 @@ const createDonation = async (req, res) => {
       status: "pending",
     })
 
-    return res.render("donations/show.ejs")
+    const populatedDonation = await Donation.findById(donation._id)
+      .populate("donor")
+      .populate("equipment")
+
+    return res.render("donations/show.ejs", {
+      donation: populatedDonation,
+    })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message })
   }
 }
 
@@ -31,10 +40,12 @@ const getAllDonations = async (req, res) => {
       .populate("donor")
       .populate("equipment")
 
-    res.render("donations/index.ejs",{donations})
+    res.render("donations/index.ejs", { donations })
   } catch (error) {
-      res.status(500)
-      .json({ message: "Error fetching donations", error: error.message })
+    res.status(500).json({
+      message: "Error fetching donations",
+      error: error.message,
+    })
   }
 }
 
@@ -44,26 +55,29 @@ const getDonationById = async (req, res) => {
       .populate("donor")
       .populate("equipment")
 
-    if (!donation)
-      return res.status(404).json({ message: "Donation not found" })
+    if (!donation) {
+      return res.status(404).send("Donation not found")
+    }
 
-    res.status(200).json(donation)
+    res.render("donations/show.ejs", { donation })
   } catch (error) {
-    res.render("donations/show.ejs", { donation: donation })
-      .status(500)
-      .json({ message: "Error fetching donation", error: error.message })
+    res.status(500).json({
+      message: "Error fetching donation",
+      error: error.message,
+    })
   }
 }
 
 const updateStatusDonation = async (req, res) => {
   try {
-    if (!req.session.user || req.session.user.role !== "admin")
-      return res.status(403).json({ message: "Access denied" })
+    if (!req.session.user || req.session.user.role !== "admin") {
+      return res.status(403).send("Access denied")
+    }
 
     const { status } = req.body
 
     if (!["approved", "pending", "rejected"].includes(status)) {
-      return res.status(400).json({ message: "Invalid status" })
+      return res.status(400).send("Invalid status")
     }
 
     const updatedDonation = await Donation.findByIdAndUpdate(
@@ -72,14 +86,16 @@ const updateStatusDonation = async (req, res) => {
       { new: true }
     )
 
-    if (!updatedDonation)
-      return res.status(404).json({ message: "Donation not found" })
+    if (!updatedDonation) {
+      return res.status(404).send("Donation not found")
+    }
 
     res.redirect("/donation/get-all-donations")
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating donation", error: error.message })
+    res.status(500).json({
+      message: "Error updating donation",
+      error: error.message,
+    })
   }
 }
 

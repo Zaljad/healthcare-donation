@@ -1,146 +1,136 @@
-const Request = require('../models/Request');
-const MedicalEquipment = require('../models/MedicalEquipment');
+const Request = require("../models/Request")
+const MedicalEquipment = require("../models/MedicalEquipment")
 
-const createRequest = async (req,res) => {
+const showCreateForm = async (req, res) => {
   try {
-    if (!req.session.user || req.session.user.role !== 'admin'){
-      return res.send('❌ Please login first!')
-    }
+    const equipment = await MedicalEquipment.findById(req.params.id)
+    if (!equipment) return res.send("Equipment not found")
 
-    const equipmentId = req.params.equipmentId;
-    const equipment = await MedicalEquipment.findById(equipmentId)
-
-    if(!equipment){
-      return res.send('❌ Tool dose not exist!')
-    }
-
-    if(equipment.status !== 'available'){
-      return res.send('Sorry, this tool is already reserved or taken 😞')
-    }
-
-    const newRequest = await Request.create({
-      requestedUser: req.session.user._id,
-      equipment: equipmentId,
-      status: 'pending'
-    })
-
-    await MedicalEquipment.findByIdAndUpdate(equipmentId, {status: ' reserved'})
-
-    res.send('✅ your request successfully sent!')
-  } catch (error) {
-    res.send('⚠️ an error occurred creating request!'), error.message
+    res.render("requests/create", { equipment })
+  } catch (err) {
+    console.log(err)
+    res.send("Error loading create form")
   }
 }
 
-const getAllRequests = async (req,res) => {
+const createRequest = async (req, res) => {
   try {
-    if (!req.session.user || req.session.user.role !== 'admin'){
-      return res.send('❌ Access denied!')
+    const equipment = await MedicalEquipment.findById(req.params.id)
+
+    if (!equipment || equipment.status !== "available") {
+      return res.send("Equipment not available")
+    }
+
+    await Request.create({
+      requestedUser: req.session.userId,
+      equipment: req.params.id,
+    })
+
+    res.redirect("/requests/my-request")
+  } catch (err) {
+    console.log(err)
+    res.send("Error creating request")
+  }
+}
+
+const getUserRequests = async (req, res) => {
+  try {
+    const requests = await Request.find({
+      requestedUser: req.session.userId,
+    }).populate("equipment")
+
+    res.render("requests/myRequests", { requests })
+  } catch (err) {
+    console.log(err)
+    res.send("Error loading user requests")
+  }
+}
+
+const getAllRequests = async (req, res) => {
+  try {
+    if (!req.session.user || req.session.user.role !== "admin") {
+      return res.send("Access Denied - Admin Only")
     }
 
     const requests = await Request.find()
-    .populate('requestedUser', 'userName email')
-    .populate('equipment')
+      .populate("requestedUser")
+      .populate("equipment")
 
-    res.send(requests)
-  } catch (error) {
-    res.send('⚠️ error fetching requests!'), error.message
+    res.render("requests/index", { requests, successMessage: null })
+  } catch (err) {
+    console.log(err)
+    res.send("Error loading requests")
   }
 }
 
 const getRequestByStatus = async (req, res) => {
   try {
-      if (!req.session.user || req.session.user.role !== 'admin'){
-      return res.send('❌ Access denied!')
+    if (!req.session.user || req.session.user.role !== "admin") {
+      return res.send("Access Denied - Admin Only")
     }
 
-    const {status} = req.body;
+    const requests = await Request.find({
+      status: req.params.status,
+    })
+      .populate("requestedUser")
+      .populate("equipment")
 
-    const validStatuses = ['approved', 'pending', 'rejected']
-    if(!validStatuses. includes(status)){
-      return res.send('❌ Invalid status! Please use approved, pending, rejected')
-    }
-
-    const requests = await Request.find()
-    .populate('requestedUser', 'userName email')
-    .populate('equipment')
-
-    if(requests.length === 0){
-      return res.send('No result found 😞')
-    }
-
-    res.send(requests)
-  } catch (error) {
-    res.send('⚠️ Error fetching requests!'), error.message
+    res.render("requests/index", { requests, successMessage: null })
+  } catch (err) {
+    console.log(err)
+    res.send("Error filtering requests")
   }
 }
 
-const getUserRequests = async (req, res) =>{
+const updateRequestStatus = async (req, res) => {
   try {
-    const requests = await Request.find ({ requestedUser: req.session.user._id})
-    .populate('equipment')
-    .sort({ createAt: -1})
-
-    if(request.length === 0){
-      return res.send('You have no requests yet')
+    if (!req.session.user || req.session.user.role !== "admin") {
+      return res.send("Access Denied - Admin Only")
     }
 
-    res.send(requests)
-  } catch (error) {
-    res.send('⚠️ Error fetching requests!'), error.message
-  }
-}
+    const request = await Request.findById(req.params.id)
+    if (!request) return res.send("Request not found")
 
-const updateRequestStatus = async (req,res) => {
-  try {
-    if (!req.session.user || req.session.user.role !== 'admin'){
-      return res.send('❌ Access denied!')
-    }
-
-    const {status} = req.body;
-    const requestId = req.params.id;
-    const request = await Request.findById(requestId)
-
-    if(!request){
-      return res.send('Request not found❗')
-    }
-
-    if(status === 'approved'){
-      await MedicalEquipment.findByIdAndUpdate(request.equipment, {status: 'completed'})
-    }
-
-    if(status === 'rejected'){
-      await MedicalEquipment.findByIdAndUpdate(request.equipment, {status: 'available'})
-    }
-
-    request.status = status
+    request.status = req.body.status
     await request.save()
 
-  } catch (error) {
-    res.send('⚠️ error updating status!'), error.message
+    if (req.body.status === "approved") {
+      await MedicalEquipment.findByIdAndUpdate(request.equipment, {
+        status: "reserved",
+      })
+    } else if (req.body.status === "rejected") {
+      await MedicalEquipment.findByIdAndUpdate(request.equipment, {
+        status: "available",
+      })
+    }
+
+    res.redirect("/requests")
+  } catch (err) {
+    console.log(err)
+    res.send("Error updating request")
   }
 }
 
-const deleteRequest = async (req,res) => {
+const deleteRequest = async (req, res) => {
   try {
-    if (!req.session.user || req.session.user.role !== 'admin'){
-      return res.send('❌ Access denied!')
+    if (!req.session.user || req.session.user.role !== "admin") {
+      return res.send("Access Denied - Admin Only")
     }
 
-    const request = await Request.findByIdAndDelete(req.params.id)
-
-    res.send('Request deleted successfully 🪦')
-  } catch (error) {
-    res.send('⚠️ error deleting requests!'), error.message
+    await Request.findByIdAndDelete(req.params.id)
+    res.redirect("/requests")
+  } catch (err) {
+    console.log(err)
+    res.send("Error deleting request")
   }
 }
 
 module.exports = {
+  showCreateForm,
   createRequest,
+  getUserRequests,
   getAllRequests,
   getRequestByStatus,
-  getUserRequests,
   updateRequestStatus,
-  deleteRequest
+  deleteRequest,
 }
-
