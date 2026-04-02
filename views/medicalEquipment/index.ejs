@@ -23,6 +23,13 @@
             <div class="card-footer">
               <span>Price: <%= tool.price%></span>
               <a href="/medicalEquipment/<%= tool._id %>" class="btn-main">View Details</a>
+
+              <%if (tool.status === 'available'){%>
+                <a href="/requests/create/<%tool._id%>" class="btn-main">Request Tool</a>
+                <%} else{%>
+                  <span class="btn-secondary">Not Available</span>
+                  <%}%>
+
             </div>
           </div>
         </div>
