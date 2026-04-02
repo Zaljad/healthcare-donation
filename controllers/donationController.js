@@ -52,24 +52,31 @@ const getEditDonationForm = async (req, res) => {
 }
 const updateDonation = async (req, res) => {
   try {
-    const donation = await Donation.findById(req.params.id)
+    const donation = await Donation.findById(req.params.id).populate(
+      "equipment"
+    )
+    if (!donation) return res.status(404).send("Donation not found")
 
-    if (!donation) {
-      return res.send("Donation not found")
+    donation.equipment.equipmentName = req.body.equipmentName
+    donation.equipment.category = req.body.category
+    donation.equipment.equipmentImg = req.body.equipmentImg
+    donation.equipment.description = req.body.description
+    donation.equipment.price = req.body.price
+
+    if (req.session.user && req.session.user.role === "admin") {
+      const { status } = req.body
+      if (["pending", "approved", "rejected"].includes(status)) {
+        donation.status = status
+      }
     }
 
-    await MedicalEquipment.findByIdAndUpdate(donation.equipment, {
-      equipmentName: req.body.equipmentName,
-      category: req.body.category,
-      equipmentImg: req.body.equipmentImg,
-      description: req.body.description,
-      price: req.body.price,
-    })
+    await donation.equipment.save()
+    await donation.save()
 
-    res.redirect(`/donation/${req.params.id}`)
+    res.redirect("/donation/get-all-donations")
   } catch (error) {
     console.log(error)
-    res.send("Error updating donation")
+    res.status(500).send("Error updating donation")
   }
 }
 
@@ -107,42 +114,10 @@ const getDonationById = async (req, res) => {
   }
 }
 
-const updateStatusDonation = async (req, res) => {
-  try {
-    if (!req.session.user || req.session.user.role !== "admin") {
-      return res.status(403).send("Access denied")
-    }
-
-    const { status } = req.body
-
-    if (!["approved", "pending", "rejected"].includes(status)) {
-      return res.status(400).send("Invalid status")
-    }
-
-    const updatedDonation = await Donation.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    )
-
-    if (!updatedDonation) {
-      return res.status(404).send("Donation not found")
-    }
-
-    res.redirect("/donation/get-all-donations")
-  } catch (error) {
-    res.status(500).json({
-      message: "Error updating donation",
-      error: error.message,
-    })
-  }
-}
-
 module.exports = {
   createDonation,
   getEditDonationForm,
   updateDonation,
   getAllDonations,
   getDonationById,
-  updateStatusDonation,
 }

@@ -25,9 +25,7 @@
       placeholder="Image URL"
     />
 
-    <textarea name="description">
-<%= donation.equipment.description %></textarea
-    >
+    <textarea name="description"><%= donation.equipment.description %></textarea>
 
     <input
       type="number"
@@ -36,7 +34,16 @@
       placeholder="Price"
     />
 
-    <br /><br />
+    <% if(user && user.role === 'admin'){ %>
+      <label>Status:</label>
+      <select name="status">
+        <option value="pending" <%= donation.status === 'pending' ? 'selected' : '' %>>Pending</option>
+        <option value="approved" <%= donation.status === 'approved' ? 'selected' : '' %>>Approved</option>
+        <option value="rejected" <%= donation.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
+      </select>
+    <% } else { %>
+      <p>Status: <strong><%= donation.status %></strong></p>
+    <% } %>
 
     <button type="submit" class="btn-main">Update</button>
   </form>

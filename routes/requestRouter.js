@@ -10,7 +10,7 @@ router.post("/create/:id", requestController.createRequest)
 
 router.get("/my-request", requestController.getUserRequests)
 
-router.get("/", requestController.getAllRequests)
+router.get("/all-request", requestController.getAllRequests)
 router.get("/status/:status", requestController.getRequestByStatus)
 router.post("/update/:id", requestController.updateRequestStatus)
 router.get("/delete/:id", requestController.deleteRequest)

@@ -60,7 +60,10 @@ const getAllRequests = async (req, res) => {
       .populate("requestedUser")
       .populate("equipment")
 
-    res.render("requests/index", { requests, successMessage: null })
+    res.render("requests/index", {
+      requests,
+      user: req.session.user,
+    })
   } catch (err) {
     console.log(err)
     res.send("Error loading requests")
@@ -79,7 +82,7 @@ const getRequestByStatus = async (req, res) => {
       .populate("requestedUser")
       .populate("equipment")
 
-    res.render("requests/index", { requests, successMessage: null })
+    res.render("requests/index", { requests })
   } catch (err) {
     console.log(err)
     res.send("Error filtering requests")
