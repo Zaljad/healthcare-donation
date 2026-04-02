@@ -46,7 +46,7 @@ const updateTool = async (req, res) => {
     if (!tool){
       return res.send ('Tool is not exist❗')
     }
-    res.redirect(`/medicalEquipment/${tool.id} `)
+    res.redirect(`${tool.id} `)
   } catch (error){
     console.error('⚠️ Error updating equipment', error.message)
   }
@@ -62,7 +62,7 @@ const deleteTool = async (req, res) => {
     if(!tool){
       return res.send('Tool is not exist❗')
     }
-    res.redirect('medicalEquipment/get-all-tools')
+    res.redirect('index')
   } catch (error) {
     console.error('⚠️ Error deleting equipment', error.message)
   }

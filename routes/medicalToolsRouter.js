@@ -9,7 +9,8 @@ router.get("/", medicalToolsController.getAllTools)
 router.get("/get-all-tools", medicalToolsController.getAllTools)
 router.get("/:id", medicalToolsController.getToolById)
 router.get("/category/:category", medicalToolsController.getToolsByCategory)
-router.put("/:id", medicalToolsController.updateTool)
+router.put("/:id/edit", medicalToolsController.updateTool)
 router.delete("/:id", medicalToolsController.deleteTool)
+
 
 module.exports = router
