@@ -10,7 +10,7 @@ const createDonation = async (req, res) => {
     const newTool = await MedicalEquipment.create({
       equipmentName: req.body.equipmentName,
       category: req.body.category,
-      equipmentImg: req.body.equipmentImg,
+      equipmentImg: req.body.equipmentImg?.trim() || null,
       description: req.body.description,
       price: req.body.price,
       status: "available",

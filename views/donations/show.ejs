@@ -4,12 +4,12 @@
   <hr>
   <div class=" card-info">
     <div class="card-media">
-      <% if(donation.equipment.equipmentImg){%>
-        <img src="<%= donation.equipment.equipmentImg %>">
-      <%} else{ %>
-        <div class="img-placeholder">
-          No Image
-        </div>
+  <% if (donation.equipment.equipmentImg && donation.equipment.equipmentImg.trim() !== "") { %>
+    <img src="<%= donation.equipment.equipmentImg %>" alt="<%= donation.equipment.equipmentName %>">
+  <% } else { %>
+    <div class="img-placeholder">
+      No Image
+</div>
         <%}%>
     </div>
     <div class="card-body">
