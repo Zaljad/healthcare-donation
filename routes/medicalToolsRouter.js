@@ -5,7 +5,7 @@ const middleware = require("../middleware")
 
 const medicalToolsController = require("../controllers/medicalToolsController.js")
 
-
+router.get("/", medicalToolsController.getAllTools)
 router.get("/get-all-tools", medicalToolsController.getAllTools)
 router.get("/:id", medicalToolsController.getToolById)
 router.get("/category/:category", medicalToolsController.getToolsByCategory)

@@ -40,6 +40,7 @@ const getUserRequests = async (req, res) => {
     }).populate("equipment")
 
     res.render("requests/myRequests", { requests })
+
   } catch (err) {
     console.log(err)
     res.send("Error loading user requests")
