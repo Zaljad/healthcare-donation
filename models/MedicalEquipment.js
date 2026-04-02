@@ -8,7 +8,7 @@ const medicalEquipmentSchema = new mongoose.Schema({
     required:true
     },
   category: {type: String, required:true},
-  equipmentImg: {type: String, required:true},
+  equipmentImg: {type: String, required:false},
   description: {type: String, required:true},
   price: {type: Number, required:true}
 },{timestamps: true})

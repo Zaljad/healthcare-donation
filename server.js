@@ -24,7 +24,6 @@ const PORT = process.env.PORT ? process.env.PORT : 3000
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, "public")))
-app.use(express.urlencoded({extended: fstat}))
 app.use(morgan("dev"))
 app.use(methodOverride("_method"))
 app.use(

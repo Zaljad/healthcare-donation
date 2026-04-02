@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+<main class=" container">
+  <h2>Details of Donation</h2>
+  <hr>
+  <div class=" card-info">
+    <div class="card-media">
+      <% if(donation.equipment.equipmentImg){%>
+        <img src="<%= donation.equipment.equipmentImg %>">
+      <%} else{ %>
+        <div class="img-placeholder">
+          No Image
+        </div>
+        <%}%>
+    </div>
+    <div class="card-body">
+      <span class="populate-category-lable">
+        <%= donation.equipment.category%>
+      </span>
+      <h3 class="card-title"><%= donation.equipment.equipmentName %></h3>
+      <p><strong>Description:</strong><% donation.equipment.description%></p>
+      <p><strong>Price:</strong><% donation.equipment.price%></p>
+      <p><strong>Status:</strong><% donation.equipment.status%></p>
+
+      <div class="card-footer">
+        <span class="date"><%= new Date(donation.createdAt).toLocaleDateString() %></span>
+      </div>
+    </div>
+  </div>
+  <br>
+  <a href="/donation/get-all-donations" class="btn-secondary">Back</a>
+</main>
+<%- include('../partials/footer') %>

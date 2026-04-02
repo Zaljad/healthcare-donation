@@ -3,6 +3,7 @@ const MedicalEquipment = require("../models/MedicalEquipment")
 
 const createDonation = async (req, res) => {
   try {
+    const userId= (req.session.user)? req.session.user._id: null
     const newTool = await MedicalEquipment.create({
       equipmentName: req.body.equipmentName,
       category: req.body.category,
@@ -18,9 +19,9 @@ const createDonation = async (req, res) => {
       status: "pending",
     })
 
-    res.redirect("/donation/get-all-donations", {donations})
+    return res.render("donations/show.ejs")
   } catch (error) {
-    res.status( error.message )
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -48,7 +49,7 @@ const getDonationById = async (req, res) => {
 
     res.status(200).json(donation)
   } catch (error) {
-    res.render("donations/show.ejs", {donations})
+    res.render("donations/show.ejs", { donation: donation })
       .status(500)
       .json({ message: "Error fetching donation", error: error.message })
   }
@@ -74,7 +75,7 @@ const updateStatusDonation = async (req, res) => {
     if (!updatedDonation)
       return res.status(404).json({ message: "Donation not found" })
 
-    res.status(200).json(updatedDonation)
+    res.redirect("/donation/get-all-donations")
   } catch (error) {
     res
       .status(500)

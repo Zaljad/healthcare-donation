@@ -1,11 +1,11 @@
-<%- include('./partials/header.ejs') %>
+<%- include('../partials/header') %>
 <main>
 
-  <div class=" container">
+  <div class="container">
     <div class="form-card">
       <h2>Donate Medical Equipment 🩺</h2>
       <p>Please enter the details of the equipment you want to donate with.
-        <br> Your contribution helps those in need></p>
+        <br> Your contribution helps those in need</p>
         <hr>
 
         <form action="/donation/create-donation" method="POST">
@@ -49,9 +49,9 @@
             <textarea
             id="description"
             name="description"
-            row="4"
+            rows="4"
             required
-            placeholder="http://example.com/image.jpg">
+            placeholder="http://example.com/image.jpg"></textarea>
           </div>
 
           <div class="form-btn">
@@ -64,4 +64,4 @@
   </div>
 
 </main>
-<%- include('./partials/footer.ejs') %>
+<%- include('../partials/footer') %>

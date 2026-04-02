@@ -1,6 +1,6 @@
 <%- include('../partials/header') %>
 <main class="container">
-  
+
 
       <h2>Donation History 📋</h2>
 
@@ -27,9 +27,11 @@
                     <%= donation.equipment.category %>
                   </span>
 
+                  <a href="/donation/<%= donation._id %>"></a>
                   <h3 class="card-title"><%= donation.equipment.equipmentName %></h3>
+                  </a>
 
-                  <span class="badge status">
+                  <span class="status">
                     <%= donation.status %>
                   </span>
                 </div>
@@ -37,6 +39,9 @@
                     <span class="date">
                       <%= new Date(donation.createdAt).toLocaleDateString() %>
                     </span>
+                    <div class="card-actions">
+                      <a href="/donation/<%= donation._id %>/edit" class="btn-main"><i class="edit-icon">✏️</i></a>
+                    </div>
 
                     <span class="id">
                       <%= donation._id %>
