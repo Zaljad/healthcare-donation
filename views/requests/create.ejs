@@ -8,7 +8,7 @@
 
   <% if (equipment.status === 'available') { %>
     <form action="/requests/create/<%= equipment._id %>" method="POST">
-      <button>Send Request</button>
+      <button type="submit">Send Request</button>
     </form>
   <% } else { %>
     <p style="color:red;">Not available</p>
