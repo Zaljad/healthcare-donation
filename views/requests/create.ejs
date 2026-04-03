@@ -1,18 +1,24 @@
 <%- include('../partials/header.ejs') %>
 
-<h2>Request Equipment</h2>
+<div class="container">
+  <div class="card-info">
+    <h2>Request Equipment</h2>
 
-<div>
-  <h3><%= equipment.equipmentName %></h3>
-  <p>Status: <%= equipment.status %></p>
+    <div class="card-details">
+      <h3><%= equipment.equipmentName %></h3>
+      <p><strong>Status:</strong> <%= equipment.status %></p>
 
-  <% if (equipment.status === 'available') { %>
-    <form action="/requests/create/<%= equipment._id %>" method="POST">
-      <button type="submit">Send Request</button>
-    </form>
-  <% } else { %>
-    <p style="color:red;">Not available</p>
-  <% } %>
+      <% if (equipment.status === 'available') { %>
+        <form action="/requests/create/<%= equipment._id %>" method="POST">
+          <button type="submit" class="btn-main">Send Request</button>
+        </form>
+      <% } else { %>
+        <p style="color:red; font-weight:bold;">Not available</p>
+      <% } %>
+
+      <a href="/medicalEquipment" class="btn-secondary" style="margin-top: 10px;">Back to List</a>
+    </div>
+  </div>
 </div>
 
 <%- include('../partials/footer.ejs') %>

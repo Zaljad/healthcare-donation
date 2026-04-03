@@ -1,40 +1,49 @@
 <%- include('../partials/header.ejs') %>
 
-<h2>All Requests</h2>
+<div class="container">
+  <div class="card-info">
+    <h2>All Requests</h2>
 
-<% if (requests.length === 0) { %>
-  <p>No requests found.</p>
-<% } else { %>
-  <table border="1" cellpadding="5" cellspacing="0">
-    <tr>
-      <th>User</th>
-      <th>Email</th>
-      <th>Equipment</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
+    <% if (!requests || requests.length === 0) { %>
+      <p>No requests found.</p>
+    <% } else { %>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Equipment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% requests.forEach(r => { %>
+              <tr>
+                <td><%= r.requestedUser?.userName %></td>
+                <td><%= r.requestedUser?.email %></td>
+                <td><%= r.equipment?.equipmentName %></td>
+                <td><%= r.status %></td>
+                <td>
+                  <form action="/requests/update/<%= r._id %>" method="POST" style="display:inline-block;">
+                    <select name="status" class="btn-secondary">
+                      <option value="pending" <%= r.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                      <option value="approved" <%= r.status === 'approved' ? 'selected' : '' %>>Approved</option>
+                      <option value="rejected" <%= r.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                    </select>
+                    <button type="submit" class="btn-main">Update</button>
+                  </form>
 
-    <% requests.forEach(r => { %>
-      <tr>
-        <td><%= r.requestedUser?.userName %></td>
-        <td><%= r.requestedUser?.email %></td>
-        <td><%= r.equipment?.equipmentName %></td>
-        <td><%= r.status %></td>
-        <td>
-          <form action="/requests/update/<%= r._id %>" method="POST" style="display:inline-block;">
-            <select name="status">
-              <option value="pending" <%= r.status === 'pending' ? 'selected' : '' %>>Pending</option>
-              <option value="approved" <%= r.status === 'approved' ? 'selected' : '' %>>Approved</option>
-              <option value="rejected" <%= r.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
-            </select>
-            <button type="submit">Update</button>
-          </form>
-
-          <a href="/requests/delete/<%= r._id %>" onclick="return confirm('Are you sure?')">Delete</a>
-        </td>
-      </tr>
-    <% }) %>
-  </table>
-<% } %>
+                  <a href="/requests/delete/<%= r._id %>" class="btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
 
 <%- include('../partials/footer.ejs') %>

@@ -1,34 +1,61 @@
 <%- include('../partials/header.ejs') %>
 
-<h2>User Details</h2>
+<div class="container">
+  <div class="card-info">
+    <h2>User Details</h2>
 
-<p>Name: <%= user.userName %></p>
-<p>Email: <%= user.email %></p>
-<p>Phone: <%= user.phoneNum %></p>
-<p>Address: <%= user.address %></p>
-<p>Role: <%= user.role %></p>
-<a href="/users/edit-profile">Edit Profile</a>
+    <!-- معلومات المستخدم -->
+    <div class="card-details">
+      <p><strong>Name:</strong> <%= user.userName %></p>
+      <p><strong>Email:</strong> <%= user.email %></p>
+      <p><strong>Phone:</strong> <%= user.phoneNum %></p>
+      <p><strong>Address:</strong> <%= user.address %></p>
+      <p><strong>Role:</strong> <%= user.role %></p>
 
-<h3>Donations</h3>
-<ul>
-  <% if (user.donations && user.donations.length > 0) { %>
-    <% user.donations.forEach(d => { %>
-      <li><%= d.equipment?.equipmentName %> - <%= d.status %></li>
-    <% }) %>
-  <% } else { %>
-    <li>No donations yet.</li>
-  <% } %>
-</ul>
+      <a href="/users/edit-profile" class="btn-main">Edit Profile</a>
+    </div>
 
-<h3>Requests</h3>
-<ul>
-  <% if (user.requests && user.requests.length > 0) { %>
-    <% user.requests.forEach(r => { %>
-      <li><%= r.equipment?.equipmentName %> - <%= r.status %></li>
-    <% }) %>
-  <% } else { %>
-    <li>No requests yet.</li>
-  <% } %>
-</ul>
+    <!-- التبرعات -->
+    <h3>Donations</h3>
+    <div class="grid-container">
+      <% if (user.donations && user.donations.length > 0) { %>
+        <% user.donations.forEach(d => { %>
+          <div class="card-info">
+            <p><strong>Equipment:</strong> <%= d.equipment ? d.equipment.equipmentName : 'No Equipment' %></p>
+            <p>
+              <strong>Status:</strong>
+              <span style="color:<%= d.status === 'approved' ? 'green' : d.status === 'pending' ? 'orange' : 'red' %>;">
+                <%= d.status %>
+              </span>
+            </p>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>No donations yet.</p>
+      <% } %>
+    </div>
+
+    <!-- الطلبات -->
+    <h3>Requests</h3>
+    <div class="grid-container">
+      <% if (user.requests && user.requests.length > 0) { %>
+        <% user.requests.forEach(r => { %>
+          <div class="card-info">
+            <p><strong>Equipment:</strong> <%= r.equipment ? r.equipment.equipmentName : 'No Equipment' %></p>
+            <p>
+              <strong>Status:</strong>
+              <span style="color:<%= r.status === 'approved' ? 'green' : r.status === 'pending' ? 'orange' : 'red' %>;">
+                <%= r.status %>
+              </span>
+            </p>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>No requests yet.</p>
+      <% } %>
+    </div>
+
+  </div>
+</div>
 
 <%- include('../partials/footer.ejs') %>

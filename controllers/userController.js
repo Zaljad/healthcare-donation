@@ -8,7 +8,7 @@ const getAllUsers = async (req, res) => {
       return res.status(403).json({ message: "Access denied" })
     }
     const users = await User.find()
-    res.render("./users/all-users.ejs", { user: users })
+    res.render("./users/all-users.ejs", { users })
   } catch (error) {
     res.status(500).json({
       message: "Error fetching users",
