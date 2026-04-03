@@ -40,7 +40,7 @@ const createRequest = async (req, res) => {
 const getUserRequests = async (req, res) => {
   try {
     const requests = await Request.find({
-      requestedUser: req.session.userId,
+      requestedUser: req.session.user._id,
     }).populate("equipment")
 
     res.render("requests/myRequests", { requests })

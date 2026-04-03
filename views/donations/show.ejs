@@ -1,25 +1,23 @@
 <%- include('../partials/header') %>
-<main class=" container">
+<main class="container">
   <h2>Details of Donation</h2>
   <hr>
-  <div class=" card-info">
+  <div class="card-info">
     <div class="card-media">
-  <% if (donation.equipment.equipmentImg && donation.equipment.equipmentImg.trim() !== "") { %>
-    <img src="<%= donation.equipment.equipmentImg %>" alt="<%= donation.equipment.equipmentName %>">
-  <% } else { %>
-    <div class="img-placeholder">
-      No Image
-</div>
-        <%}%>
+      <% if (donation.equipment && donation.equipment.equipmentImg && donation.equipment.equipmentImg.trim() !== "") { %>
+        <img src="<%= donation.equipment.equipmentImg %>" alt="<%= donation.equipment.equipmentName %>">
+      <% } else { %>
+        <div class="img-placeholder">No Image</div>
+      <% } %>
     </div>
     <div class="card-body">
-      <span class="populate-category-lable">
-        <%= donation.equipment.category%>
+      <span class="populate-category-label">
+        <%= donation.equipment ? donation.equipment.category : 'N/A' %>
       </span>
-      <h3 class="card-title"><%= donation.equipment.equipmentName %></h3>
-      <p><strong>Description:</strong><%= donation.equipment.description%></p>
-      <p><strong>Price:</strong><%= donation.equipment.price%></p>
-      <p><strong>Status:</strong><%= donation.equipment.status%></p>
+      <h3 class="card-title"><%= donation.equipment ? donation.equipment.equipmentName : 'No Name' %></h3>
+      <p><strong>Description:</strong> <%= donation.equipment ? donation.equipment.description : 'No Description' %></p>
+      <p><strong>Price:</strong> <%= donation.equipment ? donation.equipment.price : 'N/A' %></p>
+      <p><strong>Status:</strong> <%= donation.status %></p>
 
       <div class="card-footer">
         <span class="date"><%= new Date(donation.createdAt).toLocaleDateString() %></span>

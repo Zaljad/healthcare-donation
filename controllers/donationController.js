@@ -44,7 +44,7 @@ const getEditDonationForm = async (req, res) => {
       return res.status(404).send("Donation not found")
     }
 
-    res.render("donations/edit.ejs", { donation })
+    res.render("donations/edit", { donation })
   } catch (error) {
     console.log(error)
     res.send("Error loading edit page")
@@ -73,7 +73,7 @@ const updateDonation = async (req, res) => {
     await donation.equipment.save()
     await donation.save()
 
-    res.redirect("/donation/get-all-donations")
+    res.redirect(`/donation/${id}`)
   } catch (error) {
     console.log(error)
     res.status(500).send("Error updating donation")

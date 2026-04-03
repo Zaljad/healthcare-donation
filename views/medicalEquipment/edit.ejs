@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <h2>Edit Medical Equipment</h2>
+
+  <form action="/medicalEquipment/<%= tool._id %>?_method=PUT" method="POST">
+
+    <label for="equipmentName">Name:</label>
+    <input type="text" name="equipmentName" id="equipmentName" value="<%= tool.equipmentName %>" required>
+    <br><br>
+
+    <div class="form-item">
+          <label for="category">Category:</label>
+          <select id="category" name="category" required>
+            <option value="" display selected>select a category..</option>
+            <option value="Mobility">
+              Mobility Aids (Crutches, Wheelchairs..)
+            </option>
+            <option value="Respiratory">Respiratory Devices</option>
+            <option value="Monitoring">Monitoring Devices (BP, Glucose)</option>
+            <option value="General">General Medical Tools</option>
+          </select>
+        </div>
+    <br><br>
+
+    <label for="price">Price:</label>
+    <input type="number" name="price" id="price" value="<%= tool.price %>" required>
+    <br><br>
+
+    <label for="status">Status:</label>
+    <select name="status" id="status">
+      <option value="available" <%= tool.status === 'available' ? 'selected' : '' %>>Available</option>
+      <option value="reserved" <%= tool.status === 'reserved' ? 'selected' : '' %>>Reserved</option>
+    </select>
+    <br><br>
+
+    <label for="description">Description:</label>
+    <textarea name="description" id="description" rows="4"><%= tool.description %></textarea>
+    <br><br>
+
+    <button type="submit" class="btn-main">Update Tool</button>
+  </form>
+
+  <br>
+  <a href="/medicalEquipment/<%= tool._id %>" class="btn-secondary">Back to Tool Details</a>
+</div>
+
+<%- include('../partials/footer') %>

@@ -13,6 +13,8 @@ router.get("/get-all-Users", userController.getAllUsers)
 
 router.get("/:id", userController.getUserById)
 
+router.get("/details/:id", userController.getUserById)
+
 router.delete("/:id", userController.deleteUser)
 
 module.exports = router
